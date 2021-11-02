@@ -1,4 +1,4 @@
-using MLAPI;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Server
@@ -43,15 +43,9 @@ namespace Server
         {
             if (GUILayout.Button(NetworkManager.Singleton.IsServer ? "Move" : "Request Position Change"))
             {
-                if (NetworkManager.Singleton.ConnectedClients.TryGetValue(NetworkManager.Singleton.LocalClientId,
-                    out var networkedClient))
-                {
-                    var player = networkedClient.PlayerObject.GetComponent<DefaultPlayer>();
-                    if (player)
-                    {
-                        player.Move();
-                    }
-                }
+                var playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
+                var player = playerObject.GetComponent<DefaultPlayer>();
+                player.Move();
             }
         }
     }

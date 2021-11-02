@@ -1,21 +1,18 @@
-using MLAPI;
-using MLAPI.Messaging;
-using MLAPI.NetworkVariable;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Server
 {
     public class DefaultPlayer : NetworkBehaviour
     {
-        public NetworkVariableVector3 Position = new NetworkVariableVector3(new NetworkVariableSettings
-        {
-            WritePermission = NetworkVariablePermission.ServerOnly,
-            ReadPermission = NetworkVariablePermission.Everyone
-        });
+        public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
 
-        public override void NetworkStart()
+        public override void OnNetworkSpawn()
         {
-            Move();
+            if (IsOwner)
+            {
+                Move();
+            }
         }
 
         public void Move()
