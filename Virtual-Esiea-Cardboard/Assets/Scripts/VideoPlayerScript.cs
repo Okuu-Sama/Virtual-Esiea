@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class VideoPlayerScript : MonoBehaviour
 {
+
+    VideoPlayer videoPlayer;
     // Start is called before the first frame update
     void Start()
     {
         // Will attach a VideoPlayer to the main camera.
-        GameObject camera = GameObject.Find("VideoPlayer");
+        GameObject videoScreen = GameObject.Find("VideoPlayer");
 
         // VideoPlayer automatically targets the camera backplane when it is added
         // to a camera object, no need to change videoPlayer.targetCamera.
-        var videoPlayer = camera.GetComponent<UnityEngine.Video.VideoPlayer>();
+        videoPlayer = videoScreen.GetComponent<UnityEngine.Video.VideoPlayer>();
 
         // Play on awake defaults to true. Set it to false to avoid the url set
         // below to auto-start playback since we're in Start().
@@ -46,13 +49,23 @@ public class VideoPlayerScript : MonoBehaviour
         // associated with this preparation one can use videoPlayer.Prepare() along with
         // its prepareCompleted event.*
         
+        
+    }
+
+    public void playVideo() 
+    {
         videoPlayer.Play();
     }
 
-    void EndReached(UnityEngine.Video.VideoPlayer vp)
+    public void stopVideo() 
+    {
+        videoPlayer.Stop();
+    }
+
+    /*void EndReached(UnityEngine.Video.VideoPlayer vp)
     {
         vp.playbackSpeed = vp.playbackSpeed / 10.0F;
-    }
+    }*/
     // Update is called once per frame
     void Update()
     {
