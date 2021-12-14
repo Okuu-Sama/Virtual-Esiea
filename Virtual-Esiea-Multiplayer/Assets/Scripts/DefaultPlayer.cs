@@ -6,9 +6,12 @@ namespace Server
     public class DefaultPlayer : NetworkBehaviour
     {
         public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
+        private ClientData myData;
+
 
         public override void OnNetworkSpawn()
         {
+
             if (IsOwner)
             {
                 Move();
