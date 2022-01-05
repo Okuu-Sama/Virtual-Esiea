@@ -7,15 +7,17 @@ namespace Server
     {
         public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
         private ClientData myData;
-
+        
 
         public override void OnNetworkSpawn()
         {
-
+            //TODO: Add details about user connection
+            Debug.Log("New connection");
             if (IsOwner)
             {
                 Move();
             }
+            
         }
 
         public void Move()
