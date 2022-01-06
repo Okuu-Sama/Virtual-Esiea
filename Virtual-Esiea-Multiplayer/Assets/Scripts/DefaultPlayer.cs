@@ -29,15 +29,20 @@ namespace Server
         private NetworkVariable<char> mess_19 = new NetworkVariable<char>(NetworkVariableReadPermission.Everyone);
         private NetworkVariable<char> mess_20 = new NetworkVariable<char>(NetworkVariableReadPermission.Everyone);
         private NetworkVariable<char> mess_end = new NetworkVariable<char>(NetworkVariableReadPermission.Everyone);
+        private ClientData myData;
+        
 
         public override void OnNetworkSpawn()
         {
+            //TODO: Add details about user connection
+            Debug.Log("New connection");
             chat = FindObjectOfType<TMP_Text>();
             if (IsOwner)
             {
                 
                 Move();
             }
+            
         }
 
         public void Move()

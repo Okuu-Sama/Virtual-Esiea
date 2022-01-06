@@ -24,7 +24,6 @@ namespace Server
 
             GUILayout.EndArea();
         }
-
         static void StartButtons()
         {
             if (GUILayout.Button("Host")) NetworkManager.Singleton.StartHost();
