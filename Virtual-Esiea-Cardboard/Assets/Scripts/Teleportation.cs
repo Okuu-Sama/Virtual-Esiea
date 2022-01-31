@@ -1,17 +1,17 @@
 using UnityEngine;
+using UnityEngine.Video;
 
 public class Teleportation : MonoBehaviour
 {
     private bool m_watch;
     private Vector3 m_actualPosition;
     private Vector3 m_newPosition;
-
     [SerializeField]
     private Timer m_timer;
 
     [SerializeField]
     private Transform m_player;
-
+    
 
 
     private void Start()
@@ -20,6 +20,7 @@ public class Teleportation : MonoBehaviour
         m_actualPosition = m_player.position;
         m_newPosition = Vector3.zero;
         TeleportPlayer(m_watch);
+
     }
     private void Update()
     {
@@ -33,6 +34,8 @@ public class Teleportation : MonoBehaviour
         m_watch = true;
         m_newPosition = new Vector3(transform.position.x, transform.position.y + 1.6f, transform.position.z);
         m_timer.Activate();
+
+
     }
     public void OnPointerExit()
     {
@@ -40,6 +43,7 @@ public class Teleportation : MonoBehaviour
         m_timer.NullTimerCharger();
         m_actualPosition = m_player.position;
         TeleportPlayer(m_watch);
+
     }
     private void TeleportPlayer(bool gazedAt)
     {
