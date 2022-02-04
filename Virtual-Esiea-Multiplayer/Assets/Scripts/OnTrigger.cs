@@ -9,19 +9,21 @@ public class OnTrigger : MonoBehaviour
 
     void Start()
     {
-        m_audioSource = GetComponent<AudioSource>();
+        m_audioSource = gameObject.GetComponent<AudioSource>();
     }
 
     void OnTriggerEnter (Collider collider)
     {
-        if (collider.gameObject.name == "Player")
+        Debug.Log("reached Ontrigger");
+        if (collider.gameObject.tag == "NetworkPlayer")
         {
+            Debug.Log("Player reached the audio zone");
             m_audioSource.Play();
         }
     }
     void OnTriggerExit(Collider collider)
     {
-        if (collider.gameObject.name == "Player")
+        if (collider.gameObject.tag == "NetworkPlayer")
         {
             m_audioSource.Pause();
         }

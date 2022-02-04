@@ -24,6 +24,9 @@ namespace Server
 
             GUILayout.EndArea();
         }
+
+        //TODO: Make list of connected user
+
         static void StartButtons()
         {
             if (GUILayout.Button("Host")) NetworkManager.Singleton.StartHost();
@@ -47,9 +50,21 @@ namespace Server
             {
                 var playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
                 var player = playerObject.GetComponent<DefaultPlayer>();
-                player.Move();
+                GameObject playerspawn = GameObject.Find("PlayerSpawn");
+                player.Move(playerspawn.transform.position);
             }
         }
+
+        public static NetworkClient GetNetworkClient(ulong clientId)
+        {
+            if(!NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out NetworkClient client))
+            {
+                Debug.Log("Server failed to return client to ID: " + clientId);
+                return null;
+            }
+            return client;
+        }
+
         public void sendText(string message)
         {
             Debug.Log(message);

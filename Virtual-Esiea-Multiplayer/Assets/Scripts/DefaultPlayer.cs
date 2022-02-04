@@ -1,13 +1,18 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.AI;
 using TMPro;
 
 namespace Server
 {
+    
     public class DefaultPlayer : NetworkBehaviour
     {
         public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
+        public NetworkVariable<Quaternion> Rotation = new NetworkVariable<Quaternion>();
+        
         public TMP_Text chat = null;
+        public GameObject playerSpawn = null;
         private NetworkVariable<char> mess_1 = new NetworkVariable<char>(NetworkVariableReadPermission.Everyone);
         private NetworkVariable<char> mess_2 = new NetworkVariable<char>(NetworkVariableReadPermission.Everyone);
         private NetworkVariable<char> mess_3 = new NetworkVariable<char>(NetworkVariableReadPermission.Everyone);
@@ -30,39 +35,136 @@ namespace Server
         private NetworkVariable<char> mess_20 = new NetworkVariable<char>(NetworkVariableReadPermission.Everyone);
         private NetworkVariable<char> mess_end = new NetworkVariable<char>(NetworkVariableReadPermission.Everyone);
         private ClientData myData;
-        
+        private NavMeshAgent localNavMeshAgent = null;
+        private Vector3 tempPosition = Vector3.zero;
 
         public override void OnNetworkSpawn()
         {
             //TODO: Add details about user connection
-            Debug.Log("New connection");
-            chat = FindObjectOfType<TMP_Text>();
             if (IsOwner)
             {
                 
-                Move();
+                Debug.Log("New connection");
+                GameObject tempchattext = null;
+                tempchattext = GameObject.FindWithTag("ChatDisplayArea");
+                chat = tempchattext.GetComponent<TMP_Text>();
+                if (chat is null)
+                    Debug.Log("failed to get chat area");
+                Debug.Log("could get chat area");
+                GameObject playerspawn = null;
+                playerspawn = GameObject.Find("PlayerSpawn");
+                playerSpawn = playerspawn;
+                if (playerspawn is null)
+                    Debug.Log("couldn't find spawn");
+
+                //Move(playerspawn.transform.position);
+
+                //Move(playerspawn.transform.position);
+                //SubmitSpawnPositionServerRpc(playerspawn.transform.position);
+                //SubmitPositionRequestServerRpc();
+
+                //TODO inject player controller script into this obj
+                //CANT USE PLAYER CONTROLLER SCRIPT
+                //Need to make custom function because have to interact with server for displacement -> RPC
+                //Camera.main.transform.parent = gameObject.transform;
+
+                Camera.main.transform.parent = gameObject.transform;
+                Camera.main.transform.localPosition = Vector3.zero;
+                Camera.main.transform.localRotation = Quaternion.identity;
+                Camera.main.transform.localScale = Vector3.one;
+
+                //Camera.main.transform.SetParent(gameObject.transform, false);
+                //Camera.main.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+                
+                localNavMeshAgent = gameObject.AddComponent<NavMeshAgent>();
+                if(localNavMeshAgent is null)
+                {
+                    Debug.Log("failed to create navmeshagent");
+                }
+                else
+                {
+                    Debug.Log("navmeshagent added");
+                }
+                
+
+                GameObject sceneplayer = GameObject.Find("Player");
+                //gameObject.AddComponent<Camera>();
+                sceneplayer.SetActive(false);
+
+                /*if(localNavMeshAgent.Warp(playerspawn.transform.position))
+                {
+                    Debug.Log("Warp happened");
+                }
+                if(localNavMeshAgent.SetDestination(GameObject.Find("testmove").transform.position))
+                {
+                    Debug.Log("set destination happened");
+                }*/
+
+                //Setting the network variable to prevent teleporting back to the position (0,0,0), the initial value in the network variable
+                //After teleporting to the player spawn, the update of this class is faster than the when we update the network variable after pressing a button
+                Debug.Log("current position of game object before update" + (gameObject.transform.position).ToString("F4"));
+                Debug.Log("value in network var position: " + (Position.Value).ToString("F4"));
+                Debug.Log("value in network var rotation: " + (Rotation.Value).ToString("F4"));
+                //UpdatePositionRotationServerRpc(playerspawn.transform.position, Quaternion.identity);
+                Debug.Log("value in network var position: " + (Position.Value).ToString("F4"));
+                Debug.Log("value in network var rotation: " + (Rotation.Value).ToString("F4"));
+                gameObject.AddComponent(typeof(PlayerController));
             }
             
         }
 
-        public void Move()
+        public void Move(Vector3 position = default)
         {
             if (NetworkManager.Singleton.IsServer)
             {
                 var randomPosition = GetRandomPositionOnPlane();
-                transform.position = randomPosition;
-                Position.Value = randomPosition;
+                //transform.position = randomPosition;
+                //Position.Value = randomPosition;
+                transform.position = position;
+                Position.Value = position;
             }
             else
             {
-                SubmitPositionRequestServerRpc();
+                //Vector3 positionToReach = gameObject.transform.position + position;
+                SubmitSpawnPositionServerRpc(position);
             }
+        }
+
+        public void Rotate(Quaternion rotation = default)
+        {
+
+            SubmitNewPlayerRotationServerRpc(rotation);
+
         }
 
         [ServerRpc]
         void SubmitPositionRequestServerRpc(ServerRpcParams rpcParams = default)
         {
             Position.Value = GetRandomPositionOnPlane();
+        }
+
+        // TODO: Rename function
+        [ServerRpc]
+        void SubmitSpawnPositionServerRpc(Vector3 position, ServerRpcParams rpcParams = default)
+        {
+            Position.Value = position;
+        }
+
+        [ServerRpc]
+        void SubmitNewPlayerRotationServerRpc(Quaternion rotation, ServerRpcParams rpcParams = default)
+        {
+            Rotation.Value = rotation;
+        }
+
+        /// <summary>
+        /// Used to send the current position and rotation of the client to the server, preventing wrong initialization behaviors 
+        /// </summary>
+        /// <param name="rpcParams">RPCparams to use</param>
+        [ServerRpc]
+        void UpdatePositionRotationServerRpc(Vector3 position, Quaternion rotation, ServerRpcParams rpcParams = default)
+        {
+            Position.Value = position;
+            Rotation.Value = rotation;
         }
 
         static Vector3 GetRandomPositionOnPlane()
@@ -72,7 +174,21 @@ namespace Server
 
         void Update()
         {
-            transform.position = Position.Value;
+            //tempPosition = transform.position;
+            // if(transform.position != tempPosition)
+            //{
+            //transform.position = Position.Value;
+            //    tempPosition = transform.position;
+            //}
+            //transform.position = Position.Value;
+            transform.rotation = Rotation.Value;
+            //if(IsOwner)
+            //{
+            //    Debug.Log("value in network var position: " + (Position.Value).ToString("F4"));
+            //    Debug.Log("value in network var rotation: " + (Rotation.Value).ToString("F4"));
+            //    localNavMeshAgent.Move(Position.Value);
+            //}
+
         }
 
 
@@ -112,6 +228,8 @@ namespace Server
         }
         private void OnEnable()
         {
+            Position.OnValueChanged += OnPositionChanged;
+
             mess_1.OnValueChanged += onNewMessage;
             mess_2.OnValueChanged += onNewMessage;
             mess_3.OnValueChanged += onNewMessage;
@@ -133,7 +251,14 @@ namespace Server
             mess_19.OnValueChanged += onNewMessage;
             mess_20.OnValueChanged += onNewMessage;
             mess_end.OnValueChanged += onNewMessage;
+        }
 
+        private void OnPositionChanged(Vector3 oldPosition, Vector3 newPosition)
+        {
+            if(IsClient)
+            {
+                localNavMeshAgent.Move(newPosition);
+            }
         }
 
         /*private void OnDisable()
@@ -144,9 +269,18 @@ namespace Server
         private void onNewMessage(char oldMessage, char newMessage)
         {
             if (!IsClient) { return; }
-
+            if (chat is null)
+                chat = GameObject.FindWithTag("ChatDisplayArea").GetComponent<TMP_Text>();
             Debug.Log("adding text "+newMessage);
-            chat.text += newMessage;
+            if(!(chat is null))
+            {
+                chat.text += newMessage;
+            }
+            else
+            {
+                Debug.Log("what is null");
+            }
+
         }
     }
 }
