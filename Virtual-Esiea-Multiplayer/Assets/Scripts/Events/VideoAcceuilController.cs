@@ -6,10 +6,12 @@ using UnityEngine.UI;
 using System;
 
 
-
+/// <summary>
+/// Custom script to control a video player on a certain gameobject
+/// </summary>
 public class VideoAcceuilController : MonoBehaviour
 {
-
+    //The video player to control
     public VideoPlayer Vp;
     public Text txt;
 
@@ -24,7 +26,7 @@ public class VideoAcceuilController : MonoBehaviour
     void Update()
     {
 
-        //Debug.Log(Vp.time.ToString("000"));
+        //Display the time of the video
         double seconds1 = Vp.time;
         double minutes1;
         if (Vp.time > 60)
@@ -34,7 +36,7 @@ public class VideoAcceuilController : MonoBehaviour
         {
             minutes1 = 0.0;
         }
-        //Debug.Log(minutes1 + ":" + seconds1);
+
         double seconds2 = Vp.clip.length;
         double minutes2;
         if (Vp.clip.length > 60)
@@ -47,8 +49,8 @@ public class VideoAcceuilController : MonoBehaviour
             minutes2 = 0.0;
         }
         txt.text = minutes1.ToString("00") + ":" + seconds1.ToString("00") + "/" + minutes2.ToString("00") + ":" + seconds2.ToString("00");
-        //t2 = Vp.clip.length * 24f;
 
+        //We can pause and play the video using the space key
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (Vp.isPaused)

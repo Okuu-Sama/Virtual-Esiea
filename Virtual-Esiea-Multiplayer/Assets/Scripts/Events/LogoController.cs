@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Custom calss to trigger an event when the player look at the ESIEA Logo
+/// </summary>
 public class LogoController : MonoBehaviour
 {
 

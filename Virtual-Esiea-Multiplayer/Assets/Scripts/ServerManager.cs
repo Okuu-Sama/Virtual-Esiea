@@ -6,8 +6,12 @@ namespace Server
 {
     public class ServerManager : MonoBehaviour
     {
+        //The Text input area for the chat
         [SerializeField] private TMP_InputField input = null;
 
+        //TODO: Make list of connected user
+
+        //Spawn a custom GUI to launch the network service
         void OnGUI()
         {
             GUILayout.BeginArea(new Rect(10, 10, 300, 300));
@@ -25,8 +29,6 @@ namespace Server
             GUILayout.EndArea();
         }
 
-        //TODO: Make list of connected user
-
         static void StartButtons()
         {
             if (GUILayout.Button("Host")) NetworkManager.Singleton.StartHost();
@@ -34,6 +36,7 @@ namespace Server
             if (GUILayout.Button("Server")) NetworkManager.Singleton.StartServer();
         }
 
+        //Show the status of the current instance of the program. Is a server or client?
         static void StatusLabels()
         {
             var mode = NetworkManager.Singleton.IsHost ?
@@ -44,6 +47,9 @@ namespace Server
             GUILayout.Label("Mode: " + mode);
         }
 
+        /// <summary>
+        /// Custom function to help the client teleport back to the spawn (entrance of the school).
+        /// </summary>
         static void SubmitNewPosition()
         {
             if (GUILayout.Button(NetworkManager.Singleton.IsServer ? "Move" : "Request Position Change"))
@@ -55,32 +61,19 @@ namespace Server
             }
         }
 
-        public static NetworkClient GetNetworkClient(ulong clientId)
-        {
-            if(!NetworkManager.Singleton.ConnectedClients.TryGetValue(clientId, out NetworkClient client))
-            {
-                Debug.Log("Server failed to return client to ID: " + clientId);
-                return null;
-            }
-            return client;
-        }
-
+        /// <summary>
+        /// Retrieve the message in the input area of the local client and send it to the server
+        /// </summary>
+        /// <param name="message"></param>
         public void sendText(string message)
         {
-            Debug.Log(message);
-            //if (!Input.GetKeyDown(KeyCode.Return)) { return; }
             if (string.IsNullOrWhiteSpace(message)) { return; }
 
             var playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
             var player = playerObject.GetComponent<DefaultPlayer>();
             
-                player.setServerRpc(message);
-            
-
-                input.text = string.Empty;
-
-            //}
-            
+            player.SendMessageServerRpc(message);
+            input.text = string.Empty;  
         }
 
     }

@@ -1,6 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
+//TEST SCRIPT
 public class ServerTestManager : MonoBehaviour
 {
     

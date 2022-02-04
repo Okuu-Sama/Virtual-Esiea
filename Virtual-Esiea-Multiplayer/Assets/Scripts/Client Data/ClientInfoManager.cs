@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Custom Script to keep track of the data entered by a user
+/// </summary>
 public class ClientInfoManager : MonoBehaviour
 {
+    //TODO: Make object attached to this script persistent.
+    //The idea is to use it in the multiplayer scene to fill the data of the client
 
     private ClientData client;
     public InputField FirstNameField;
@@ -12,6 +17,7 @@ public class ClientInfoManager : MonoBehaviour
     public GameObject RoleSelection;
     public GameObject NameSelection;
 
+    //Function fired by the UI button in the scene to confirm the guide role
     public void SelectGuideRole()
     {
         client = new Visitor();
@@ -19,6 +25,7 @@ public class ClientInfoManager : MonoBehaviour
         NameSelection.SetActive(true);
     }
 
+    //Function fired by the UI button in the scene to confirm the visitor role
     public void SelectVisitorRole()
     {
         client = new Guide();
@@ -26,6 +33,7 @@ public class ClientInfoManager : MonoBehaviour
         NameSelection.SetActive(true);
     }
 
+    //Function fired by the UI button in the scene to confirm the client information
     public void ConfirmClientInformation()
     {
         client.FirstName = FirstNameField.text;
