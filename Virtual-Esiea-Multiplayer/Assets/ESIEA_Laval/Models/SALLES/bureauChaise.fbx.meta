@@ -1,0 +1,134 @@
+fileFormatVersion: 2
+guid: 42051a9c9e1574955a2426b785ae0dc7
+timeCreated: 1473148994
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: chaiseCour157
+    100004: chaiseCour158
+    100006: chaiseCour159
+    100008: chaiseCour160
+    100010: chaiseCour161
+    100012: chaiseCour162
+    100014: TableCour79
+    100016: TableCour80
+    100018: TableCour81
+    100020: TableCour82
+    100022: TableCour83
+    100024: TableCour84
+    400000: //RootNode
+    400002: chaiseCour157
+    400004: chaiseCour158
+    400006: chaiseCour159
+    400008: chaiseCour160
+    400010: chaiseCour161
+    400012: chaiseCour162
+    400014: TableCour79
+    400016: TableCour80
+    400018: TableCour81
+    400020: TableCour82
+    400022: TableCour83
+    400024: TableCour84
+    2300000: chaiseCour157
+    2300002: chaiseCour158
+    2300004: chaiseCour159
+    2300006: chaiseCour160
+    2300008: chaiseCour161
+    2300010: chaiseCour162
+    2300012: TableCour79
+    2300014: TableCour80
+    2300016: TableCour81
+    2300018: TableCour82
+    2300020: TableCour83
+    2300022: TableCour84
+    3300000: chaiseCour157
+    3300002: chaiseCour158
+    3300004: chaiseCour159
+    3300006: chaiseCour160
+    3300008: chaiseCour161
+    3300010: chaiseCour162
+    3300012: TableCour79
+    3300014: TableCour80
+    3300016: TableCour81
+    3300018: TableCour82
+    3300020: TableCour83
+    3300022: TableCour84
+    4300000: TableCour79
+    4300002: chaiseCour157
+    4300004: TableCour80
+    4300006: chaiseCour158
+    4300008: TableCour81
+    4300010: chaiseCour159
+    4300012: TableCour82
+    4300014: chaiseCour160
+    4300016: chaiseCour161
+    4300018: TableCour83
+    4300020: TableCour84
+    4300022: chaiseCour162
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
